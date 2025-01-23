@@ -1,6 +1,6 @@
 {
   "name": "color-bridge",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "author": "Alec Lloyd Probert",
   "type": "module",
   "private": false,
@@ -13,6 +13,7 @@
     "translation",
     "color translation"
   ],
+  "homepage": "https://color-bridge.graphieros.com/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/graphieros/color-bridge.git"
