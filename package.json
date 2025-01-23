@@ -13,9 +13,14 @@
     "translation",
     "color translation"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graphieros/color-bridge.git"
+  },
   "files": [
     "dist"
   ],
+  "license": "MIT",
   "main": "./dist/my-lib.umd.cjs",
   "module": "./dist/my-lib.js",
   "scripts": {
