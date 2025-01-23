@@ -1,6 +1,6 @@
 {
   "name": "color-bridge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Alec Lloyd Probert",
   "type": "module",
   "private": false,
@@ -21,8 +21,8 @@
     "dist"
   ],
   "license": "MIT",
-  "main": "./dist/my-lib.umd.cjs",
-  "module": "./dist/my-lib.js",
+  "main": "./dist/color-bridge.umd.cjs",
+  "module": "./dist/color-bridge.js",
   "scripts": {
     "dev": "vite",
     "build": "vitest run --coverage && tsc && vite build",
@@ -31,8 +31,8 @@
   },
   "exports": {
     ".": {
-      "import": "./dist/my-lib.js",
-      "require": "./dist/my-lib.umd.cjs"
+      "import": "./dist/color-bridge.js",
+      "require": "./dist/color-bridge.umd.cjs"
     }
   },
   "devDependencies": {
