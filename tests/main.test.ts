@@ -29,7 +29,7 @@ describe('main', () => {
                 [Feeling.SUCCESS]: defaultPalette[colorAssociations[Feeling.SUCCESS][Culture.CHINESE]],
                 [Feeling.URGENCY]: defaultPalette[colorAssociations[Feeling.URGENCY][Culture.CHINESE]]
             },
-            paletteHues: {
+            hues: {
                 [Feeling.CAUTION]: [
                     lightenHexColor({ hexColor: defaultPalette[colorAssociations[Feeling.CAUTION][Culture.CHINESE]], force: 0.8}),
                     lightenHexColor({ hexColor: defaultPalette[colorAssociations[Feeling.CAUTION][Culture.CHINESE]], force: 0.7}),

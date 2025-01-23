@@ -9,7 +9,7 @@ export default function colorBridge({ culture } : {
     
     const palette = getDefaultPalette(culture as Culture);
 
-    const paletteHues = mapObjectColorValues(palette, (hexColor) => {
+    const hues = mapObjectColorValues(palette, (hexColor) => {
         const arr = [];
         for (let force = 0.8; force > 0; force -= 0.1) {
             arr.push(lightenHexColor({ hexColor, force }));
@@ -22,6 +22,6 @@ export default function colorBridge({ culture } : {
 
     return {
         palette,
-        paletteHues
+        hues
     }
 }
