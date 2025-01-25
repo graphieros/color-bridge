@@ -124,15 +124,16 @@ const { palette, hues, themes } = colorBridge({ culture: "western" });
 ### Utility functions
 
 ```js
-const { createHues, darkenHexColor, lightenHexColor } = colorBridge({ culture: "chinese" });
+const { createHues, darkenHexColor, lightenHexColor } = colorBridge({
+  culture: "chinese",
+});
 
 // Create a set of 16 colors fro light to dark from a hex color
-const myHues = createHues({ hexColor: '#6376DD' });
+const myHues = createHues({ hexColor: "#6376DD" });
 
 // Darken a hex color by a given force (from 0 to 1)
-const darkened = darkenHexColor({ hexColor: '#6376DD', 0.2 });
+const darkened = darkenHexColor({ hexColor: "#6376DD", force: 0.2 });
 
 // Lighten a hex color by a given force (from 0 to 1)
-const darkened = lightenColor({ hexColor: '#6376DD', 0.2 });
-
+const darkened = lightenColor({ hexColor: "#6376DD", force: 0.2 });
 ```
