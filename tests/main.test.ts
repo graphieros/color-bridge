@@ -41,6 +41,8 @@ describe('main', () => {
             expect(result.hues).toStrictEqual(expectedHues);
             expect(typeof result.lightenHexColor).toBe('function');
             expect(typeof result.darkenHexColor).toBe('function');
+            expect(typeof result.createHues).toBe('function');
+            expect(typeof result.textColorForBackground).toBe('function');
         });
     });
 });

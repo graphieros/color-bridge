@@ -3,7 +3,7 @@ import {
     test,
     describe,
 } from "vitest";
-import { darkenHexColor, enumToArray, getDefaultPalette, lightenHexColor, shiftHue, validateCulture } from "../lib/utils";
+import { darkenHexColor, enumToArray, getDefaultPalette, lightenHexColor, shiftHue, textColorForBackground, validateCulture } from "../lib/utils";
 import { Culture, Feeling, ThemeColor } from "../lib/types";
 import { colorAssociations, defaultPalette, themePalettes } from "../lib/constants";
 
@@ -215,5 +215,93 @@ describe('themePalettes', () => {
                 });
             });
         });
+    });
+});
+
+describe("textColorForBackground", () => {
+    test("should return the dark text color for a light background", () => {
+        const bgColor = "#FFFFFF";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should return the light text color for a dark background", () => {
+        const bgColor = "#000000";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#FFFFFF");
+    });
+
+    test("should handle mid-tone colors and choose the best contrast", () => {
+        const bgColor = "#777777";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should handle custom light and dark colors provided in options", () => {
+        const bgColor = "#333333";
+        const options = { light: "#FFFFFF", dark: "#000000" };
+        const result = textColorForBackground(bgColor, options);
+        expect(result).toBe("#FFFFFF");
+    });
+
+    test("should work with short hex colors", () => {
+        const bgColor = "#FFF";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should work with RGB colors", () => {
+        const bgColor = "rgb(255, 255, 255)";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should work with RGBA colors and ignore alpha", () => {
+        const bgColor = "rgba(255, 255, 255, 0.5)";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should choose dark text for saturated light colors", () => {
+        const bgColor = "#FFDD88";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should choose light text for saturated dark colors", () => {
+        const bgColor = "#0055AA";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#FFFFFF");
+    });
+
+    test("should handle edge cases with near-white colors", () => {
+        const bgColor = "#FEFEFE";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#000000");
+    });
+
+    test("should handle edge cases with near-black colors", () => {
+        const bgColor = "#010101";
+        const result = textColorForBackground(bgColor);
+        expect(result).toBe("#FFFFFF");
+    });
+
+    test("should correctly compare contrast when light and dark colors are custom and swapped", () => {
+        const bgColor = "#888888";
+        const options = { light: "#000000", dark: "#FFFFFF" };
+        const result = textColorForBackground(bgColor, options);
+        expect(result).toBe("#000000");
+    });
+
+    test("should handle invalid color inputs gracefully", () => {
+        const bgColor = "not-a-color";
+        expect(() => textColorForBackground(bgColor)).toThrowError("Invalid color format");
+    });
+
+    test("should return default values if options are incomplete", () => {
+        const bgColor = "#222222";
+        const options = { light: "#FFFFFF" };
+        const result = textColorForBackground(bgColor, options);
+        expect(result).toBe("#FFFFFF");
     });
 });

@@ -6,6 +6,7 @@ import {
     getThemePalettes, 
     lightenHexColor, 
     mapObjectColorValues, 
+    textColorForBackground, 
     validateCulture 
 } from "./utils"
 
@@ -22,13 +23,13 @@ export default function colorBridge({ culture } : {
     });
 
     const themes = getThemePalettes(culture as Culture);
-
     return {
         palette,
         hues,
         themes,
         createHues,
         darkenHexColor,
-        lightenHexColor
+        lightenHexColor,
+        textColorForBackground
     }
 }

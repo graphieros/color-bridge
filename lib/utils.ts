@@ -1,5 +1,5 @@
 import { colorAssociations, defaultPalette, themePalettes } from "./constants";
-import { Culture, Feeling, FeelingColor, HueParams, ThemeColor } from "./types";
+import { Culture, Feeling, FeelingColor, HueParams, TextColorForBackgroundColorOptions, ThemeColor } from "./types";
 
 export function lightenHexColor(params: HueParams) {
     if (!/^#([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i.test(params.hexColor)) {
@@ -189,4 +189,65 @@ export function getThemePalettes(culture: Culture) {
         }
     }
     return result;
+}
+
+export function textColorForBackground(
+    bgColor: string,
+    options: TextColorForBackgroundColorOptions = {}
+): string {
+    const { light = "#FFFFFF", dark = "#000000" } = options;
+
+    function parseColor(color: string): { r: number; g: number; b: number; alpha: number } {
+        let r = 0, g = 0, b = 0, alpha = 1;
+
+        if (color.startsWith("rgba")) {
+            const rgbaMatch = color.match(/rgba?\((\d+), (\d+), (\d+), ([\d.]+)\)/);
+            if (rgbaMatch) {
+                [, r, g, b, alpha] = rgbaMatch.map(Number);
+            }
+        } else if (color.startsWith("rgb")) {
+            const rgbMatch = color.match(/rgb\((\d+), (\d+), (\d+)\)/);
+            if (rgbMatch) {
+                [, r, g, b] = rgbMatch.map(Number);
+            }
+        } else if (color.startsWith("#")) {
+            const hex = color.replace("#", "");
+            if (hex.length === 3) {
+                r = parseInt(hex[0] + hex[0], 16);
+                g = parseInt(hex[1] + hex[1], 16);
+                b = parseInt(hex[2] + hex[2], 16);
+            } else if (hex.length === 6) {
+                r = parseInt(hex.slice(0, 2), 16);
+                g = parseInt(hex.slice(2, 4), 16);
+                b = parseInt(hex.slice(4, 6), 16);
+            }
+        } else {
+            throw new Error("Invalid color format");
+        }
+
+        return { r, g, b, alpha };
+    }
+
+    function calculateLuminance({ r, g, b }: { r: number; g: number; b: number }): number {
+        const normalize = (value: number) =>
+            value / 255 <= 0.03928
+                ? value / 255 / 12.92
+                : Math.pow((value / 255 + 0.055) / 1.055, 2.4);
+        return 0.2126 * normalize(r) + 0.7152 * normalize(g) + 0.0722 * normalize(b);
+    }
+
+    function calculateContrast(luminance1: number, luminance2: number): number {
+        const lighter = Math.max(luminance1, luminance2);
+        const darker = Math.min(luminance1, luminance2);
+        return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    const bg = parseColor(bgColor);
+    const bgLuminance = calculateLuminance(bg);
+    const c_light = parseColor(light);
+    const c_dark = parseColor(dark);
+    const lightContrast = calculateContrast(bgLuminance, calculateLuminance(c_light));
+    const darkContrast = calculateContrast(bgLuminance, calculateLuminance(c_dark));
+
+    return lightContrast > darkContrast ? light : dark;
 }

@@ -25,6 +25,7 @@ const {
   createHues,
   darkenHexColor,
   lightenHexColor,
+  textColorForBackground,
 } = colorBridge({ culture: "chinese" });
 
 /**
@@ -124,9 +125,10 @@ const { palette, hues, themes } = colorBridge({ culture: "western" });
 ### Utility functions
 
 ```js
-const { createHues, darkenHexColor, lightenHexColor } = colorBridge({
-  culture: "chinese",
-});
+const { createHues, darkenHexColor, lightenHexColor, textColorForBackground } =
+  colorBridge({
+    culture: "chinese",
+  });
 
 // Create a set of 16 colors fro light to dark from a hex color
 const myHues = createHues({ hexColor: "#6376DD" });
@@ -136,4 +138,18 @@ const darkened = darkenHexColor({ hexColor: "#6376DD", force: 0.2 });
 
 // Lighten a hex color by a given force (from 0 to 1)
 const darkened = lightenColor({ hexColor: "#6376DD", force: 0.2 });
+
+// Return a text color for a given background, for a perfect contrast
+const textColor1 = textColorForBackground("#6376DD"); // #000000
+const textColor2 = textColorForBackground("#887123"); // #FFFFFF
+
+// Return a text color for a given background, with options for dark or light return color
+const textColor3 = textColorForBackground("#6376DD", {
+  light: "#FAFAFA",
+  dark: "#1A1A1A",
+}); // #1A1A1A
+const textColor4 = textColorForBackground("#887123", {
+  light: "#FAFAFA",
+  dark: "#1A1A1A",
+}); // #FAFAFA
 ```

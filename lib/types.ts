@@ -84,3 +84,8 @@ export type Theme = {
         [color in ThemeColor]: string;
     };
 };
+
+export type TextColorForBackgroundColorOptions = {
+    light?: string
+    dark?: string
+}
