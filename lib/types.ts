@@ -53,7 +53,7 @@ export enum ThemePalette {
 }
 
 export enum ThemeColor {
-    BACKGROUND_COLOR = 'backrgoundColor',
+    BACKGROUND_COLOR = 'backgroundColor',
     TEXT_COLOR = 'textColor',
     PRIMARY = 'primary',
     SECONDARY = 'secondary',
