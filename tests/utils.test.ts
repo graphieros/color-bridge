@@ -4,8 +4,8 @@ import {
     describe,
 } from "vitest";
 import { darkenHexColor, enumToArray, getDefaultPalette, lightenHexColor, shiftHue, validateCulture } from "../lib/utils";
-import { Culture, Feeling } from "../lib/types";
-import { colorAssociations, defaultPalette } from "../lib/constants";
+import { Culture, Feeling, ThemeColor } from "../lib/types";
+import { colorAssociations, defaultPalette, themePalettes } from "../lib/constants";
 
 describe("lightenHexColor", () => {
     test("should lighten a hex color without transparency", () => {
@@ -179,24 +179,14 @@ describe('shiftHue', () => {
 
 describe("getDefaultPalette", () => {
     test("should return an object of colors corresponding to all feelings for the culture passed as param", () => {
-        expect(getDefaultPalette(Culture.CHINESE)).toStrictEqual({
-            [Feeling.CAUTION]: defaultPalette[colorAssociations[Feeling.CAUTION][Culture.CHINESE]],
-            [Feeling.DANGER]: defaultPalette[colorAssociations[Feeling.DANGER][Culture.CHINESE]],
-            [Feeling.ENERGY]: defaultPalette[colorAssociations[Feeling.ENERGY][Culture.CHINESE]],
-            [Feeling.ERROR]: defaultPalette[colorAssociations[Feeling.ERROR][Culture.CHINESE]],
-            [Feeling.GROWTH]: defaultPalette[colorAssociations[Feeling.GROWTH][Culture.CHINESE]],
-            [Feeling.HAPPINESS]: defaultPalette[colorAssociations[Feeling.HAPPINESS][Culture.CHINESE]],
-            [Feeling.INNOVATION]: defaultPalette[colorAssociations[Feeling.INNOVATION][Culture.CHINESE]],
-            [Feeling.LUCK]: defaultPalette[colorAssociations[Feeling.LUCK][Culture.CHINESE]],
-            [Feeling.MOURNING]: defaultPalette[colorAssociations[Feeling.MOURNING][Culture.CHINESE]],
-            [Feeling.NEUTRALITY]: defaultPalette[colorAssociations[Feeling.NEUTRALITY][Culture.CHINESE]],
-            [Feeling.OPTIMISM]: defaultPalette[colorAssociations[Feeling.OPTIMISM][Culture.CHINESE]],
-            [Feeling.SADNESS]: defaultPalette[colorAssociations[Feeling.SADNESS][Culture.CHINESE]],
-            [Feeling.STABILITY]: defaultPalette[colorAssociations[Feeling.STABILITY][Culture.CHINESE]],
-            [Feeling.SUCCESS]: defaultPalette[colorAssociations[Feeling.SUCCESS][Culture.CHINESE]],
-            [Feeling.URGENCY]: defaultPalette[colorAssociations[Feeling.URGENCY][Culture.CHINESE]]
-        })
-    })
+        enumToArray<Culture>(Culture).forEach(culture => {
+            const expectedPalette = enumToArray<Feeling>(Feeling).reduce((acc, feeling) => {
+                acc[feeling] = defaultPalette[colorAssociations[feeling][culture]];
+                return acc;
+            }, {});
+            expect(getDefaultPalette(culture)).toStrictEqual(expectedPalette)
+        });
+    });
 });
 
 describe('validateCulture', () => {
@@ -208,5 +198,22 @@ describe('validateCulture', () => {
 
     test('should throw an error for invalid cultures', () => {
         expect(() => validateCulture('martian')).toThrow()
+    });
+});
+
+describe('themePalettes', () => {
+    test('should have valid colors for all cultures', () => {
+        const hexColorRegex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+        Object.entries(themePalettes).forEach(([_themeName, themeData]) => {
+            Object.values(Culture).forEach((culture) => {
+                const palette = themeData[culture];
+                expect(palette).toBeDefined();
+                Object.values(ThemeColor).forEach((colorKey) => {
+                    expect(palette[colorKey]).toBeDefined();
+                    expect(typeof palette[colorKey]).toBe('string');
+                    expect(palette[colorKey]).toMatch(hexColorRegex);
+                });
+            });
+        });
     });
 });

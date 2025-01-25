@@ -1,5 +1,5 @@
-import { colorAssociations, defaultPalette } from "./constants";
-import { Culture, Feeling, FeelingColor, HueParams } from "./types";
+import { colorAssociations, defaultPalette, themePalettes } from "./constants";
+import { Culture, Feeling, FeelingColor, HueParams, ThemeColor } from "./types";
 
 export function lightenHexColor(params: HueParams) {
     if (!/^#([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i.test(params.hexColor)) {
@@ -71,7 +71,7 @@ export function shiftHue(params: HueParams) {
         b: parseInt(hex.substring(5, 7), 16),
     });
 
-    const rgbToHsl = ({ r, g, b }: { r: number, g: number, b: number}) => {
+    const rgbToHsl = ({ r, g, b }: { r: number, g: number, b: number }) => {
         r /= 255;
         g /= 255;
         b /= 255;
@@ -94,7 +94,7 @@ export function shiftHue(params: HueParams) {
         return { h, s, l };
     };
 
-    const hslToRgb = ({ h, s, l }: { h: number, s: number, l: number}) => {
+    const hslToRgb = ({ h, s, l }: { h: number, s: number, l: number }) => {
         let r: number, g: number, b: number;
 
         if (s === 0) {
@@ -157,15 +157,36 @@ export function getDefaultPalette(culture: Culture): Record<Feeling, string> {
     return mapFeelingsToColors(feelingColors);
 }
 
-export function validateCulture(culture: Culture | string){
-    if(!enumToArray<Culture>(Culture).includes(culture as Culture)) {
+export function validateCulture(culture: Culture | string) {
+    if (!enumToArray<Culture>(Culture).includes(culture as Culture)) {
         throw new Error(`"${culture}" is not part of the available cultures\nPlease provide one of the following cultures:\n${enumToArray<Culture>(Culture).toString().split(',').join('\n')}`);
     }
 }
 
-export function mapObjectColorValues(obj: Record<string, string>, mapFunction: (color: string) => any ) {
+export function mapObjectColorValues(obj: Record<string, string>, mapFunction: (color: string) => any) {
     return Object.keys(obj).reduce((acc: any, key: string) => {
         acc[key] = mapFunction(obj[key])
         return acc;
     }, {});
+}
+
+export function createHues({ hexColor }: { hexColor: string }) {
+    const arr = [];
+    for (let force = 0.8; force > 0; force -= 0.1) {
+        arr.push(lightenHexColor({ hexColor, force }));
+    }
+    for (let force = 0.1; force < 0.8; force += 0.1) {
+        arr.push(darkenHexColor({ hexColor, force }));
+    }
+    return arr;
+}
+
+export function getThemePalettes(culture: Culture) {
+    const result: Record<string, Record<ThemeColor, string>> = {};
+    for (const [themeKey, themeValue] of Object.entries(themePalettes)) {
+        if (themeValue[culture]) {
+            result[themeKey] = themeValue[culture];
+        }
+    }
+    return result;
 }

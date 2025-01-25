@@ -1,5 +1,13 @@
 import { Culture } from "./types"
-import { darkenHexColor, getDefaultPalette, lightenHexColor, mapObjectColorValues, validateCulture } from "./utils"
+import { 
+    createHues, 
+    darkenHexColor, 
+    getDefaultPalette, 
+    getThemePalettes, 
+    lightenHexColor, 
+    mapObjectColorValues, 
+    validateCulture 
+} from "./utils"
 
 export default function colorBridge({ culture } : {
     culture: string
@@ -10,18 +18,17 @@ export default function colorBridge({ culture } : {
     const palette = getDefaultPalette(culture as Culture);
 
     const hues = mapObjectColorValues(palette, (hexColor) => {
-        const arr = [];
-        for (let force = 0.8; force > 0; force -= 0.1) {
-            arr.push(lightenHexColor({ hexColor, force }));
-        }
-        for (let force = 0.1; force < 0.8; force += 0.1) {
-            arr.push(darkenHexColor({ hexColor, force }));
-        }
-        return arr;
+        return createHues({ hexColor });
     });
+
+    const themes = getThemePalettes(culture as Culture);
 
     return {
         palette,
-        hues
+        hues,
+        themes,
+        createHues,
+        darkenHexColor,
+        lightenHexColor
     }
 }

@@ -44,6 +44,22 @@ export enum Color {
     PURPLE = 'purple'
 }
 
+export enum ThemePalette {
+    BUSINESS = 'business',
+    CELEBRATION = 'celebration',
+    LUXURY = 'luxury',
+    TECHNOLOGY = 'technology',
+    MINIMALIST = 'minimalist'
+}
+
+export enum ThemeColor {
+    BACKGROUND_COLOR = 'backrgoundColor',
+    TEXT_COLOR = 'textColor',
+    PRIMARY = 'primary',
+    SECONDARY = 'secondary',
+    TERTIARY = 'tertiary'
+}
+
 export type ColorAssociation = {
     feeling: Feeling
     colors: {
@@ -62,3 +78,9 @@ export type HueParams = {
     hexColor: string
     force: number
 }
+
+export type Theme = {
+    [culture in Culture]: {
+        [color in ThemeColor]: string;
+    };
+};

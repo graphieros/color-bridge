@@ -16,7 +16,16 @@ npm i color-bridge
 ```js
 import colorBridge from "color-bridge";
 
-const { palette, hues } = colorBridge({ culture: "chinese" });
+const {
+  // palettes
+  palette,
+  hues,
+  themes,
+  // utility functions
+  createHues,
+  darkenHexColor,
+  lightenHexColor,
+} = colorBridge({ culture: "chinese" });
 
 /**
  * palette: {
@@ -67,47 +76,63 @@ const { palette, hues } = colorBridge({ culture: "chinese" });
 - african:
 
 ```js
-const { palette, hues } = colorBridge({ culture: "african" });
+const { palette, hues, themes } = colorBridge({ culture: "african" });
 ```
 
 - chinese
 
 ```js
-const { palette, hues } = colorBridge({ culture: "chinese" });
+const { palette, hues, themes } = colorBridge({ culture: "chinese" });
 ```
 
 - indian
 
 ```js
-const { palette, hues } = colorBridge({ culture: "indian" });
+const { palette, hues, themes } = colorBridge({ culture: "indian" });
 ```
 
 - japanese
 
 ```js
-const { palette, hues } = colorBridge({ culture: "japanese" });
+const { palette, hues, themes } = colorBridge({ culture: "japanese" });
 ```
 
 - latinAmerican
 
 ```js
-const { palette, hues } = colorBridge({ culture: "latinAmerican" });
+const { palette, hues, themes } = colorBridge({ culture: "latinAmerican" });
 ```
 
 - middleEastern
 
 ```js
-const { palette, hues } = colorBridge({ culture: "middleEastern" });
+const { palette, hues, themes } = colorBridge({ culture: "middleEastern" });
 ```
 
 - southeastAsian
 
 ```js
-const { palette, hues } = colorBridge({ culture: "southeastAsian" });
+const { palette, hues, themes } = colorBridge({ culture: "southeastAsian" });
 ```
 
 - western
 
 ```js
-const { palette, hues } = colorBridge({ culture: "western" });
+const { palette, hues, themes } = colorBridge({ culture: "western" });
+```
+
+### Utility functions
+
+```js
+const { createHues, darkenHexColor, lightenHexColor } = colorBridge({ culture: "chinese" });
+
+// Create a set of 16 colors fro light to dark from a hex color
+const myHues = createHues({ hexColor: '#6376DD' });
+
+// Darken a hex color by a given force (from 0 to 1)
+const darkened = darkenHexColor({ hexColor: '#6376DD', 0.2 });
+
+// Lighten a hex color by a given force (from 0 to 1)
+const darkened = lightenColor({ hexColor: '#6376DD', 0.2 });
+
 ```
