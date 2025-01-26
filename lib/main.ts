@@ -10,7 +10,7 @@ import {
     validateCulture 
 } from "./utils"
 
-export default function colorBridge({ culture } : {
+function bridge({ culture } : {
     culture: string
 }) {
 
@@ -27,9 +27,21 @@ export default function colorBridge({ culture } : {
         palette,
         hues,
         themes,
+    }
+}
+
+function utils() {
+    return {
         createHues,
         darkenHexColor,
         lightenHexColor,
         textColorForBackground
+    }
+}
+
+export default function colorBridge() {
+    return {
+        bridge,
+        utils
     }
 }

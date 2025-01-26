@@ -16,17 +16,9 @@ npm i color-bridge
 ```js
 import colorBridge from "color-bridge";
 
-const {
-  // palettes
-  palette,
-  hues,
-  themes,
-  // utility functions
-  createHues,
-  darkenHexColor,
-  lightenHexColor,
-  textColorForBackground,
-} = colorBridge({ culture: "chinese" });
+const { bridge, utils } = colorBridge();
+
+const { palette, hue, themes } = bridge({ culture: "chinese" });
 
 /**
  * palette: {
@@ -77,58 +69,65 @@ const {
 - african:
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "african" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "african" });
 ```
 
 - chinese
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "chinese" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "chinese" });
 ```
 
 - indian
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "indian" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "indian" });
 ```
 
 - japanese
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "japanese" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "japanese" });
 ```
 
 - latinAmerican
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "latinAmerican" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "latinAmerican" });
 ```
 
 - middleEastern
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "middleEastern" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "middleEastern" });
 ```
 
 - southeastAsian
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "southeastAsian" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "southeastAsian" });
 ```
 
 - western
 
 ```js
-const { palette, hues, themes } = colorBridge({ culture: "western" });
+const { bridge } = colorBridge();
+const { palette, hues, themes } = bridge({ culture: "western" });
 ```
 
 ### Utility functions
 
 ```js
+const { utils } = colorBridge();
 const { createHues, darkenHexColor, lightenHexColor, textColorForBackground } =
-  colorBridge({
-    culture: "chinese",
-  });
+  utils();
 
 // Create a set of 16 colors fro light to dark from a hex color
 const myHues = createHues({ hexColor: "#6376DD" });

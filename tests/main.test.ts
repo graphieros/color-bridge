@@ -4,13 +4,13 @@ import {
     describe,
 } from "vitest";
 
-import colorBridge from "../lib/main"
 import { Culture, Feeling } from "../lib/types";
 import { colorAssociations, defaultPalette } from "../lib/constants";
 import { darkenHexColor, enumToArray, lightenHexColor } from "../lib/utils";
+import colorBridge from "../lib/main";
 
 function generateColorShades(baseColor: string, lightSteps: number, darkSteps: number): string[] {
-    const shades:string[] = [];
+    const shades: string[] = [];
     for (let i = lightSteps; i >= 0; i -= 0.1) {
         shades.push(lightenHexColor({ hexColor: baseColor, force: i }));
     }
@@ -20,10 +20,12 @@ function generateColorShades(baseColor: string, lightSteps: number, darkSteps: n
     return shades;
 }
 
+const { bridge, utils } = colorBridge();
+
 describe('main', () => {
+
     enumToArray<Culture>(Culture).forEach((culture) => {
         test(`should return available features of the library for culture: ${culture}`, () => {
-
             const expectedPalette = enumToArray<Feeling>(Feeling).reduce((acc, feeling) => {
                 acc[feeling] = defaultPalette[colorAssociations[feeling][culture]];
                 return acc;
@@ -35,14 +37,52 @@ describe('main', () => {
                 return acc;
             }, {});
 
-            const result = colorBridge({ culture });
+            const result = bridge({ culture });
 
             expect(result.palette).toStrictEqual(expectedPalette);
             expect(result.hues).toStrictEqual(expectedHues);
-            expect(typeof result.lightenHexColor).toBe('function');
-            expect(typeof result.darkenHexColor).toBe('function');
-            expect(typeof result.createHues).toBe('function');
-            expect(typeof result.textColorForBackground).toBe('function');
         });
+
+        test('should provide utility functions', () => {
+            const {
+                createHues,
+                lightenHexColor,
+                darkenHexColor,
+                textColorForBackground
+            } = utils();
+
+            expect(typeof createHues).toBe('function');
+            expect(typeof lightenHexColor).toBe('function');
+            expect(typeof darkenHexColor).toBe('function');
+            expect(typeof textColorForBackground).toBe('function');
+        });
+    });
+});
+
+describe('Default Export', () => {
+    test('should return an object with bridge and utils', () => {
+        const result = colorBridge();
+
+        expect(result).toBeDefined();
+        expect(result).toHaveProperty('bridge', bridge);
+        expect(result).toHaveProperty('utils', utils);
+
+        expect(typeof result.bridge).toBe('function');
+        expect(typeof result.utils).toBe('function');
+    });
+
+    test('should allow calling bridge and utils', () => {
+        const { bridge, utils } = colorBridge();
+
+        const bridgeResult = bridge({ culture: Culture.CHINESE });
+        expect(bridgeResult).toHaveProperty('palette');
+        expect(bridgeResult).toHaveProperty('hues');
+        expect(bridgeResult).toHaveProperty('themes');
+
+        const utilityFunctions = utils();
+        expect(utilityFunctions).toHaveProperty('createHues');
+        expect(utilityFunctions).toHaveProperty('darkenHexColor');
+        expect(utilityFunctions).toHaveProperty('lightenHexColor');
+        expect(utilityFunctions).toHaveProperty('textColorForBackground');
     });
 });
