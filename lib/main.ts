@@ -1,13 +1,15 @@
 import { Culture } from "./types"
 import { 
     createHues, 
+    createShiftedHues, 
     darkenHexColor, 
     getDefaultPalette, 
     getThemePalettes, 
     lightenHexColor, 
     mapObjectColorValues, 
+    shiftHue,
     textColorForBackground, 
-    validateCulture 
+    validateCulture,
 } from "./utils"
 
 function bridge({ culture } : {
@@ -33,9 +35,11 @@ function bridge({ culture } : {
 function utils() {
     return {
         createHues,
+        createShiftedHues,
         darkenHexColor,
         lightenHexColor,
-        textColorForBackground
+        shiftHue,
+        textColorForBackground,
     }
 }
 

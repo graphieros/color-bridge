@@ -3,7 +3,7 @@ import {
     test,
     describe,
 } from "vitest";
-import { darkenHexColor, enumToArray, getDefaultPalette, lightenHexColor, shiftHue, textColorForBackground, validateCulture } from "../lib/utils";
+import { createShiftedHues, darkenHexColor, enumToArray, getDefaultPalette, lightenHexColor, shiftHue, textColorForBackground, validateCulture } from "../lib/utils";
 import { Culture, Feeling, ThemeColor } from "../lib/types";
 import { colorAssociations, defaultPalette, themePalettes } from "../lib/constants";
 
@@ -303,5 +303,49 @@ describe("textColorForBackground", () => {
         const options = { light: "#FFFFFF" };
         const result = textColorForBackground(bgColor, options);
         expect(result).toBe("#FFFFFF");
+    });
+});
+
+describe('createShiftedHues', () => {
+    test('should return shifted colors with default step and range', () => {
+        expect(createShiftedHues({ hexColor: '#6376DD' })).toStrictEqual([
+            "#6376dd",
+            "#6369dd",
+            "#6a63dd",
+            "#7863dd",
+            "#8563dd",
+            "#9263dd",
+            "#9f63dd",
+            "#ac63dd",
+            "#b963dd",
+            "#c763dd",
+            "#d463dd",
+            "#dd63d9",
+            "#dd63cc",
+            "#dd63bf",
+            "#dd63b2",
+            "#dd63a4",
+            "#dd6397",
+        ])
+    });
+    test('should return shifted colors with set step', () => {
+        expect(createShiftedHues({ hexColor: '#6376DD', step: 0.05 })).toStrictEqual([
+            "#6376dd",
+            "#7563dd",
+            "#9963dd",
+            "#be63dd",
+            "#dd63d8",
+            "#dd63b3",
+        ]);
+    })
+    test('should return shifted colors with set step and range', () => {
+        expect(createShiftedHues({ hexColor: '#6376DD', step: 0.1, range: 0.6 })).toStrictEqual([
+            "#6376dd",
+            "#9963dd",
+            "#dd63d8",
+            "#dd638e",
+            "#dd8163",
+            "#ddca63",
+        ]);
     });
 });

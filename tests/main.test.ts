@@ -46,14 +46,18 @@ describe('main', () => {
         test('should provide utility functions', () => {
             const {
                 createHues,
-                lightenHexColor,
+                createShiftedHues,
                 darkenHexColor,
-                textColorForBackground
+                lightenHexColor,
+                shiftHue,
+                textColorForBackground,
             } = utils();
 
             expect(typeof createHues).toBe('function');
-            expect(typeof lightenHexColor).toBe('function');
+            expect(typeof createShiftedHues).toBe('function');
             expect(typeof darkenHexColor).toBe('function');
+            expect(typeof lightenHexColor).toBe('function');
+            expect(typeof shiftHue).toBe('function');
             expect(typeof textColorForBackground).toBe('function');
         });
     });
@@ -81,8 +85,10 @@ describe('Default Export', () => {
 
         const utilityFunctions = utils();
         expect(utilityFunctions).toHaveProperty('createHues');
+        expect(utilityFunctions).toHaveProperty('createShiftedHues');
         expect(utilityFunctions).toHaveProperty('darkenHexColor');
         expect(utilityFunctions).toHaveProperty('lightenHexColor');
+        expect(utilityFunctions).toHaveProperty('shiftHue');
         expect(utilityFunctions).toHaveProperty('textColorForBackground');
     });
 });

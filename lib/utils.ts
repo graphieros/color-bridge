@@ -181,6 +181,14 @@ export function createHues({ hexColor }: { hexColor: string }) {
     return arr;
 }
 
+export function createShiftedHues({ hexColor, step = 0.018, range = 0.3 }: { hexColor: string, step?:number, range?:number}) {
+    const arr = [];
+    for (let force = 0; force < range; force += step) {
+        arr.push(shiftHue({ hexColor, force }))
+    }
+    return arr;
+}
+
 export function getThemePalettes(culture: Culture) {
     const result: Record<string, Record<ThemeColor, string>> = {};
     for (const [themeKey, themeValue] of Object.entries(themePalettes)) {

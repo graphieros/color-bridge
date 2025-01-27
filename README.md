@@ -126,17 +126,33 @@ const { palette, hues, themes } = bridge({ culture: "western" });
 
 ```js
 const { utils } = colorBridge();
-const { createHues, darkenHexColor, lightenHexColor, textColorForBackground } =
-  utils();
+const {
+  createHues,
+  createShiftedHues,
+  darkenHexColor,
+  lightenHexColor,
+  shiftHue,
+  textColorForBackground,
+} = utils();
 
-// Create a set of 16 colors fro light to dark from a hex color
+// Create a set of colors from light to dark from a hex color
 const myHues = createHues({ hexColor: "#6376DD" });
+
+// Create a set of colors shifted from a hex color
+const myShiftedHues = createShiftedHues({
+  hexColor: "#6376DD",
+  step: 0.018, // step is optional. Default: 0.018. The smaller the step, the higher number of returned colors
+  range: 0.3, // range is optional. Default: 0.3. The bigger the range, the bigger the shift from the start color
+});
 
 // Darken a hex color by a given force (from 0 to 1)
 const darkened = darkenHexColor({ hexColor: "#6376DD", force: 0.2 });
 
 // Lighten a hex color by a given force (from 0 to 1)
 const darkened = lightenColor({ hexColor: "#6376DD", force: 0.2 });
+
+// Shift a color by a given force
+const shifted = shiftHue({ hexColor: "#6376DD", force: 0.2 });
 
 // Return a text color for a given background, for a perfect contrast
 const textColor1 = textColorForBackground("#6376DD"); // #000000
